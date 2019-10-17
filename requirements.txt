@@ -1,0 +1,5 @@
+django >= 2.2.5
+django-import-export
+django-suit
+# debug
+#django-debug-toolbar

@@ -1,0 +1,1 @@
+[{"model": "_bases.examtype", "pk": 1, "fields": {"name": "T1"}}, {"model": "_bases.examtype", "pk": 2, "fields": {"name": "T2"}}, {"model": "_bases.examtype", "pk": 3, "fields": {"name": "P1"}}, {"model": "_bases.examtype", "pk": 4, "fields": {"name": "P2"}}]
