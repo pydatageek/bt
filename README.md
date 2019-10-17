@@ -1,4 +1,4 @@
-please follow the process sorted below
+please follow the process below
 
 1. start an environment with requirements
     e.g. pipenv install -r bt/requirements.txt
