@@ -1,19 +1,33 @@
 from django import forms
-from django.forms import ModelForm
 
-from .models import ChildExam
+from dal import autocomplete
+
+from categories.forms import QualificationSelectForm
+from students.models import Student
+
+from .models import Exam, ChildExam
 
 
-class ChildExamForm(ModelForm):
-    def __init__(self, obj=None, *args, **kwargs):
-        initial = kwargs.pop('initial', {})
-        initial['exam_type'] = initial.get('exam_type', 'T1')
-        kwargs['initial'] = initial
-        super().__init__(obj, *args, **kwargs)
+class ExamForm(QualificationSelectForm):
+    students = forms.ModelMultipleChoiceField(
+        queryset=Student.objects.all(),
+        widget=autocomplete.ModelSelect2Multiple(
+            url='ac_student',
+            forward=['qualification']),
+    )
 
-    def clean_exam_type(self):
+    class Meta:
+        model = Exam
+        fields = '__all__'
 
-        return self.cleaned_data['exam_type']
+
+class ChildExamForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        # TODO: all exams must have 2 childexams
+        # with exam type T1 and P1 so they should
+        # be added as inline automatically
+        super().__init__(*args, **kwargs)
+
 
     class Meta:
         model = ChildExam

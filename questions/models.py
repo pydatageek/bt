@@ -31,20 +31,16 @@ class Question(models.Model):
         verbose_name = _('Question')
         verbose_name_plural = _('Questions')
 
-    def __str__(self):
-        return self.text
-
 
 class KnowledgeQuestion(Question):
     right_answer = models.CharField(
         _('right answer label'), max_length=1, choices=LABELS,
-        help_text=_("right label and one of choice's label \
+        help_text=_("TODO: right label and one of choice's label \
                     should match!"))
     statement = models.ForeignKey(
             KnowledgeStatement, on_delete=models.SET_NULL,
             blank=True, null=True,
-            related_name='questions', verbose_name=_('knowledge statement'),
-            help_text=_('qualification and unit selects are needed to reach statement'))
+            related_name='questions', verbose_name=_('knowledge statement'))
 
     class Meta:
         verbose_name = _('Knowledge Question')
@@ -60,8 +56,7 @@ class SkillQuestion(Question):
     unit = models.ForeignKey(
             Unit, on_delete=models.SET_NULL,
             blank=True, null=True,
-            related_name='questions', verbose_name=_('unit'),
-            help_text=_('qualification selects is needed to reach unit'))
+            related_name='questions', verbose_name=_('unit'))
 
     class Meta:
         verbose_name = _('Skill Question')

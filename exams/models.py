@@ -1,4 +1,7 @@
 from django.db import models
+from django.db.models import Exists, Q
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
@@ -35,10 +38,14 @@ class Exam(models.Model):
     qualification = models.ForeignKey(
         Qualification, on_delete=models.SET_NULL,
         blank=True, null=True,
-        related_name='exams', verbose_name=_('qualification'))
+        related_name='exams', verbose_name=_('qualification'),
+        help_text=_('TODO: qualification and students are chained selects. \
+            qualification = student.qualification'))
     students = models.ManyToManyField(
         Student,
-        related_name='exams', verbose_name=_('students'))
+        related_name='exams', verbose_name=_('students'),
+        help_text=_('TODO: other than chained select with qualification, \
+        only students who should take the exam be listed.'))
 
     class Meta:
         verbose_name = _('Exam')
@@ -84,6 +91,20 @@ class ChildExam(models.Model):
         verbose_name_plural = _('child exams')
         unique_together = ('exam', 'exam_type')
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        for student in self.exam.students.all():
+            print('Hello1')
+            # if not self._state.adding:
+            if StudentExamLog.objects.filter(
+                    Q(child_exam=self)).filter(Q(student=student)) is None:
+                print('Hello2')
+                sel = StudentExamLog.objects.create(
+                    child_exam=self,
+                    student=student)
+                for unit in student.units.all():
+                    sel.units.add(unit)
+
 
 class StudentExamLog(models.Model):
     child_exam = models.ForeignKey(
@@ -91,13 +112,13 @@ class StudentExamLog(models.Model):
         related_name='student_exam_logs', verbose_name=_('child exam'))
     units = models.ManyToManyField(
         'categories.Unit',
-        related_name='studentexamlogs', verbose_name=_('units'))
+        related_name='student_exam_logs', verbose_name=_('units'))
     student = models.ForeignKey(
         Student, on_delete=models.CASCADE,
         related_name='student_exam_logs', verbose_name=_('student'))
     result = models.CharField(
         _('result'), max_length=2,
-        choices=STUDENT_EXAM_STATUS, default='', null=True)
+        choices=STUDENT_EXAM_STATUS, blank=True, null=True)
 
     class Meta:
         verbose_name = _('Student Exam Log')

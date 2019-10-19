@@ -30,11 +30,24 @@ class KnowledgeQuestionAdmin(ImportExportModelAdmin):
         # ('statement__unit', admin.RelatedOnlyFieldListFilter),
         ('statement', admin.RelatedOnlyFieldListFilter),)
 
-    list_select_related = ('statement__unit__qualification', 'statement__unit', 'statement')
+    list_select_related = (
+        'statement__unit__qualification',
+        'statement__unit', 'statement')
 
-    list_display = ('text', 'right_answer')
+    list_display = (
+        'pk', 'text', 'qualification', 'unit',
+        'statement_own_code', 'right_answer')
 
     autocomplete_fields = ('statement',)
+
+    def qualification(self, obj):
+        return obj.statement.unit.qualification
+
+    def unit(self, obj):
+        return obj.statement.unit
+
+    def statement_own_code(self, obj):
+        return obj.statement.own_code
 
 
 @admin.register(SkillQuestion)
@@ -50,7 +63,12 @@ class SkillQuestionAdmin(ImportExportModelAdmin):
 
     list_select_related = ('unit__qualification', 'unit',)
 
+    list_display = ('pk', 'text', 'qualification', 'unit')
+
     autocomplete_fields = ('unit',)
+
+    def qualification(self, obj):
+        return obj.unit.qualification
 
 
 @admin.register(Choice)

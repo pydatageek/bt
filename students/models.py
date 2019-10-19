@@ -36,7 +36,10 @@ class Student(models.Model):
     qualification = models.ForeignKey(
         Qualification, on_delete=models.SET_NULL,
         blank=True, null=True,
-        related_name='students', verbose_name=_('qualification'))
+        related_name='students', verbose_name=_('qualification'),
+        help_text=_('TODO: should be chained \
+            with child selects: \
+            Qualification > Units (and Past Units)'))
 
     # TODO: check
     # required units (own_code prefixed by A) are mandatory and
@@ -52,7 +55,9 @@ class Student(models.Model):
     # javascript be best
     past_units = models.ManyToManyField(
         Unit, blank=True,
-        related_name='students_pasts', verbose_name=_('past units'))
+        related_name='students_pasts', verbose_name=_('past units'),
+        help_text=_('TODO: to be seen ONLY if apply_reason is Unit Binding. \
+            units and past_units cannot contain same objects'))
 
     class Meta:
         verbose_name = _('Student')
@@ -64,3 +69,11 @@ class Student(models.Model):
     @property
     def full_name(self):
         return '%s %s' % (self.first_name, self.last_name)
+
+    # def clean(self):
+    #     for i in self.units:
+    #         for j in self.past_units:
+    #             if i == j:
+    #                 raise ValidationError(
+    #             _('units and past units cannot contain same objects.'),
+    #             code='invalid')

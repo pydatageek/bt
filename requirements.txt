@@ -1,5 +1,6 @@
 django >= 2.2.5
-django-import-export
 django-suit
+django-import-export
+django-autocomplete-light
 # debug
 #django-debug-toolbar
