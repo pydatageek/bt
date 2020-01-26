@@ -1,4 +1,4 @@
-django >= 2.2.5
+django <= 2.2.9
 django-suit
 django-import-export
 django-autocomplete-light
