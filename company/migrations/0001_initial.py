@@ -12,15 +12,18 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='ExamType',
+            name='Company',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(choices=[('T1', 'T1'), ('T2', 'T2'), ('P1', 'P1'), ('P2', 'P2')], max_length=2, unique=True, verbose_name='name')),
+                ('title', models.CharField(max_length=100)),
+                ('address', models.TextField()),
+                ('phone', models.CharField(max_length=15)),
+                ('website', models.URLField()),
+                ('email', models.EmailField(max_length=254)),
             ],
             options={
-                'verbose_name': 'Exam type',
-                'verbose_name_plural': 'Exam types',
-                'ordering': ('pk',),
+                'verbose_name': 'Company Settings',
+                'verbose_name_plural': 'Company Settings',
             },
         ),
     ]

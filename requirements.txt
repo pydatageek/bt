@@ -3,4 +3,4 @@ django-suit
 django-import-export
 django-autocomplete-light
 # debug
-#django-debug-toolbar
+django-debug-toolbar

@@ -20,6 +20,9 @@ class BaseModel(models.Model):
 
 # Category related models
 class Sector(BaseModel):
+    """
+        Parent of Qualification
+    """
     class Meta:
         verbose_name = _('Sector')
         verbose_name_plural = _('Sectors')
@@ -27,6 +30,9 @@ class Sector(BaseModel):
 
 
 class Qualification(BaseModel):
+    """
+        Parent of Unit
+    """
     sector = models.ForeignKey(
         Sector, on_delete=models.CASCADE,
         related_name='qualifications', verbose_name=_('sector'))
@@ -36,8 +42,19 @@ class Qualification(BaseModel):
         verbose_name_plural = _('Qualifications')
         ordering = ('code',)
 
+    # def _get_units(self, qualification):
+    #     if hasattr(self, '_prefetched_objects_cache') and 'units' in self._prefetched_objects_cache:
+    #         return [c for c in self._prefetched_objects_cache['units'] if c.qualification == qualification]
+    #     else:
+    #         return self.units.filter(qualification=qualification)
+
 
 class Unit(BaseModel):
+    """
+        Parent of Statement(s):
+                - KnowledgeStatement
+                - SkillStatement
+    """
     own_code = models.CharField(
         _('own code'), max_length=10)
     qualification = models.ForeignKey(

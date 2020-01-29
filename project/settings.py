@@ -42,11 +42,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'debug_toolbar',  # debug_toolbar for debug=True
     'import_export',
 
     '_bases',
     'users',
     'categories',
+    'company',
+    'universities',
     'exams',
     'questions',
     'students',
@@ -60,6 +63,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'debug_toolbar.middleware.DebugToolbarMiddleware',  # debug_toolbar for debug=True
 ]
 
 ROOT_URLCONF = 'project.urls'
@@ -147,7 +152,10 @@ SUIT_CONFIG = {
     # for icons: https://getbootstrap.com/2.3.2/base-css.html#icons
     'LIST_PER_PAGE': 25,
     'MENU': (
-        {'label': 'Exams', 'icon': 'icon-calendar', 'models': ('exams.exam', '_bases.examtype')},
+        {'app': 'universities', 'icon': 'icon-book', 'models': (
+            'university', 'unitprice',)},
+        {'label': 'Exams', 'icon': 'icon-calendar',
+            'models': ('exams.exam', '_bases.examtype')},
         {'app': 'students', 'icon': 'icon-user'},
         {'app': 'questions', 'icon': 'icon-question-sign', 'models': (
             'knowledgequestion', 'skillquestion', 'choice')},
@@ -156,6 +164,12 @@ SUIT_CONFIG = {
             'users.user', 'auth.group')},
         {'app': 'categories', 'icon': 'icon-th-list', 'models': (
             'sector', 'qualification', 'unit',
-            'knowledgestatement', 'skillstatement')}
+            'knowledgestatement', 'skillstatement')},
+        {'label': 'Company Settings', 'icon': 'icon-tasks',
+            'url': '/admin/company/company/'},
     )
 }
+
+INTERNAL_IPS = [
+    '127.0.0.1',
+]

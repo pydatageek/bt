@@ -1,0 +1,13 @@
+[
+  {
+    "model": "company.company",
+    "pk": 7,
+    "fields": {
+      "title": "Student Certifications Inc.",
+      "address": "Middle East Street Asia Building \u0130stanbul Turkey",
+      "phone": "02121234567",
+      "website": "http://example.com",
+      "email": "s@ak.su"
+    }
+  }
+]
